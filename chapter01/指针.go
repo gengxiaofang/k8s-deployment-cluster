@@ -1,0 +1,53 @@
+/*
+指针类型为*T,指针的指针表示为 **T,以及包含包名前缀的 *<package>.T;
+特点：
+默认值为nil,没有NULL常量;
+操作符"&"取变量地址,"*"透过指针访问目标对象;
+指针不支持运算符,不支持"->" 运算符;
+ */
+
+package main
+
+import (
+	"fmt"
+	"unsafe"
+)
+
+func main() {
+	// 直接⽤指针访问⺫标对象成员，⽆须转换;
+	type data struct {
+		a int
+		b int
+	}
+
+	var d = data{1234,4567}
+	var p *data
+
+	p = &d
+	fmt.Printf("%p,%v\n",p,p.a)
+
+	// 指针间转换
+	x := 0x12345678
+	y := unsafe.Pointer(&x) // *int -> pointer
+	n := (*[4]byte)(y)     // pointer -> *[4]byte
+
+	for  i := 0; i < len(n);  i ++ {
+		fmt.Printf("%X",n[i])
+	}
+
+	// 将 pointer 转换成 uintptr,可变相实现指针运算;(uintptr 保存指针的值得范围,在32平台下为4字节,在64位平台下是8字节)
+	f := struct {
+		s string
+		x int
+	}{"abc",100}
+
+	ep := uintptr(unsafe.Pointer(&f)) // *struct -> pointer -> uinptr
+	ep += unsafe.Offsetof(f.x) // 偏移到第 x 字段
+
+	ep1 := unsafe.Pointer(ep)  // uintptr -> pointer
+	epx := (*int)(ep1)         // pointer -> *int
+	*epx = 200                 // f.x = 200
+
+	fmt.Printf("%#v\n",f)
+	}
+
