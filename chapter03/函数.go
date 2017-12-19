@@ -1,3 +1,16 @@
+/*
+函数定义的方式：
+func (p myType ) funcName ( a, b int , c string ) ( r , s int ) {
+    return
+}
+说明：
+关键字—— func
+函数名—— funcName
+参数体—— a,b int,c string
+返回值—— r,s int
+函数体—— { 代码块 }
+P myType —— 表示给 myType 声明一个方法,但并不是必须的;如果没有则是一个函数;
+ */
 package main
 
 import "fmt"
