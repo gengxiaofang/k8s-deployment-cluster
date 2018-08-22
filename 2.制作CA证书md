@@ -1,0 +1,75 @@
+### 2.1 下载证书生成工具
+#### 下载cfssl工具
+```
+wget https://pkg.cfssl.org/R1.2/cfssl_linux-amd64
+wget https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
+wget https://pkg.cfssl.org/R1.2/cfssl-certinfo_linux-amd64
+
+chmod +x cfssl_linux-amd64 cfssljson_linux-amd64 cfssl-certinfo_linux-amd64
+mv cfssl_linux-amd64 /usr/local/bin/cfssl
+mv cfssljson_linux-amd64 /usr/local/bin/cfssljson
+mv cfssl-certinfo_linux-amd64 /usr/local/bin/cfssl-certinfo
+```
+### 2.2 创建CA证书
+#### 创建CA配置文件
+CA 配置文件用于配置根证书的使用场景 (profile) 和具体参数 (usage，过期时间、服务端认证、客户端认证、加密等)。
+```
+cat > ca-config.json <<EOF
+{
+  "signing": {
+    "default": {
+      "expiry": "87600h"
+    },
+    "profiles": {
+      "kubernetes": {
+        "usages": [
+            "signing",
+            "key encipherment",
+            "server auth",
+            "client auth"
+        ],
+        "expiry": "87600h"
+      }
+    }
+  }
+}
+EOF
+```
+#### 创建证书签名请求文件
+```
+cat > ca-csr.json <<EOF
+{
+  "CN": "kubernetes",
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names": [
+    {
+      "C": "CN",
+      "ST": "BeiJing",
+      "L": "BeiJing",
+      "O": "k8s",
+      "OU": "4Paradigm"
+    }
+  ]
+}
+EOF
+```
+#### 生成 CA 证书和私钥
+```
+cfssl gencert -initca ca-csr.json | cfssljson -bare ca
+ls ca*
+```
+
+### 2.3 分发证书文件
+将生成的 CA 证书、秘钥文件、配置文件拷贝到所有节点的 /etc/kubernetes/ssl 目录下：
+```
+export NODE_IPS=(192.168.133.128 192.168.133.129 192.168.133.130 192.168.133.131 192.168.133.132)
+for node_ip in ${NODE_IPS[@]}
+  do
+    echo ">>> ${node_ip}"
+    ssh root@${node_ip} "mkdir -p /etc/kubernetes/ssl"
+    scp ca*.pem ca-config.json ${node_ip}:/etc/kubernetes/ssl
+  done
+```
