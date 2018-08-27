@@ -5,3 +5,4 @@
 本文参考链接：https://github.com/opsnull/follow-me-install-kubernetes-cluster 
 
 
+![ssl-success](images/dashboard.png)
