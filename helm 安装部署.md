@@ -1,0 +1,188 @@
+## 初始 HELM
+
+Helm 可以理解为 Kubernetes 的包管理工具，可以方便地发现、共享和使用为Kubernetes构建的应用。学习 helm 主要是想通过 helm 来实现管理内部应用的管理与发布，在通过 Jenkins 来实现应用的 CI/CD 集成时，发现回滚是一个不可忽视的问题。在众多的实现方式中，发现helm实现的很完美，没有那么复杂也能实现满足当前的功能。  
+
+Helm 是由 客户端和服务端组成。运行在 Kubernetes 群集中，并承担管理 Kubernetes 应用程序的生命周期。它包含几个基本概念：  
+
+1. Chart：一个 Helm 包，其中包含了运行一个应用所需要的镜像、依赖和资源定义等，还可能包含 Kubernetes 集群中的服务定义
+2. Release: 在 Kubernetes 集群上运行的 Chart 的一个实例。在同一个集群上，一个 Chart
+   可以安装很多次。每次安装都会创建一个新的 release。例如一个 MySQL Chart，如果想在服务器上运行两个数据库，就可以把这个Chart 安装两次。每次安装都会生成自己的 Release，会有自己的 Release 名称。
+3. Repository：用于发布和存储 Chart 的仓库。
+
+## 安全安装 HELM
+
+<h3>安装helm 客户端</h3>
+
+到 [RELEASE][1] 该站点下载最新或自己想安装版本的软件包；
+
+```
+$ wget https://storage.googleapis.com/kubernetes-helm/helm-v2.11.0-linux-amd64.tar.gz
+$ tar zxf helm-v2.11.0-linux-amd64.tar.gz
+$ mv linux-amd64/helm /usr/local/sbin/
+```
+
+<h3>安装helm 服务端</h3>
+
+安装 tiller 到群集中最简单的方法就是运行 helm init。然后它会连接到 kubectl 默认连接的任何集群（kubectl config view）。一旦连接，它将安装 tiller 到 kube-system 命名空间中。
+
+在安装之前需要在node节点安装socat解决相关依赖。
+
+```
+$ yum install -y socat
+```
+
+##### 创建证书签名请求
+
+```
+### 生成 helm 客户端证书请求
+cat > /etc/kubernetes/ssl/helm-csr.json << EOF
+{
+  "CN": "helm",
+  "hosts": [],
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names": [
+    {
+      "C": "CN",
+      "ST": "HangZhou",
+      "L": "XS",
+      "O": "k8s",
+      "OU": "System"
+    }
+  ]
+} 
+EOF
+
+### 生成 helm 服务端证书请求
+cat > /etc/kubernetes/ssl/tiller-csr.json << EOF
+{
+  "CN": "tiller",
+  "hosts": [],
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names": [
+    {
+      "C": "CN",
+      "ST": "HangZhou",
+      "L": "XS",
+      "O": "k8s",
+      "OU": "System"
+    }
+  ]
+}
+EOF
+```
+
+##### 创建helm客户端证书
+
+```
+cd /etc/kubernetes/ssl/ && cfssl gencert \
+    -ca=/etc/kubernetes/ssl/ca.pem \
+    -ca-key=/etc/kubernetes/ssl/ca-key.pem \
+    -config=/etc/kubernetes/ssl/ca-config.json \
+    -profile=kubernetes helm-csr.json | cfssljson -bare helm
+```
+
+##### 创建tiller 服务端证书请求
+
+```
+cd /etc/kubernetes/ssl/ && cfssl gencert \
+    -ca=/etc/kubernetes/ssl/ca.pem \
+    -ca-key=/etc/kubernetes/ssl/ca-key.pem \
+    -config=/etc/kubernetes/ssl/ca-config.json \
+    -profile=kubernetes tiller-csr.json | cfssljson -bare tiller
+```
+
+##### 创建helm rbac文件
+
+```
+$ cat > helm-rbac.yaml << EOF
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: helm
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: helm
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+  - kind: ServiceAccount
+    name: helm
+    namespace: kube-system
+EOF
+$ kubectl create -f helm-rbac.yaml
+```
+
+##### 安装tiller服务端
+
+```
+helm init \
+    --tiller-tls \
+    --tiller-tls-verify \
+    --tiller-tls-cert /etc/kubernetes/ssl/tiller.pem \
+    --tiller-tls-key /etc/kubernetes/ssl/tiller-key.pem \
+    --tls-ca-cert /etc/kubernetes/ssl/ca.pem \
+    --service-account=helm \
+    --tiller-namespace kube-system \
+    --tiller-image hexun/kubernetes-helm-tiller:v2.11.0 \
+    --stable-repo-url https://kubernetes-charts.storage.googleapis.com
+```
+
+提示：--node-selectors "beta.kubernetes.io/os"="linux" 可以通过该参数实现指定到某台机器安装。并且要保证helm tiller镜像版本要与客户端版本一致；
+
+##### 配置helm客户端
+
+```
+$ cp -f /etc/kubernetes/ssl/ca.pem ~/.helm/ca.pem
+$ cp -f /etc/kubernetes/ssl/helm.pem ~/.helm/cert.pem
+$ cp -f /etc/kubernetes/ssl/helm-key.pem ~/.helm/key.pem
+```
+
+##### 验证安装是否正确
+
+```
+$ helm version --tls
+Client: &version.Version{SemVer:"v2.11.0", GitCommit:"9ad53aac42165a5fadc6c87be0dea6b115f93090", GitTreeState:"clean"}
+Server: &version.Version{SemVer:"v2.11.0", GitCommit:"9ad53aac42165a5fadc6c87be0dea6b115f93090", GitTreeState:"clean"}
+$ helm repo list
+NAME  	URL                                             
+stable	https://kubernetes-charts.storage.googleapis.com
+local 	http://127.0.0.1:8879/charts
+$ helm install --name=my-wordpress stable/wordpress --tls
+...省略部分内容...
+NOTES:
+1. Get the WordPress URL:
+
+  NOTE: It may take a few minutes for the LoadBalancer IP to be available.
+        Watch the status with: 'kubectl get svc --namespace default -w my-wordpress-wordpress'
+  export SERVICE_IP=$(kubectl get svc --namespace default my-wordpress-wordpress --template "{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}")
+  echo "WordPress URL: http://$SERVICE_IP/"
+  echo "WordPress Admin URL: http://$SERVICE_IP/admin"
+
+2. Login with the following credentials to see your blog
+
+  echo Username: user
+  echo Password: $(kubectl get secret --namespace default my-wordpress-wordpress -o jsonpath="{.data.wordpress-password}" | base64 --decode)
+
+```
+
+##### 删除 HELM
+
+```
+$ kubectl delete deployment tiller-deploy --namespace=kube-system
+$ kubectl delete service tiller-deploy --namespace=kube-system
+$ kubectl delete -f helm-rbac.yaml
+$ rm -rf ~/.helm/
+```
+
+[1]: https://github.com/helm/helm/releases
