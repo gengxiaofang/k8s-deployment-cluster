@@ -1,15 +1,12 @@
-## 初始 HELM
-
+### 简单了解什么是HELM？
 Helm 可以理解为 Kubernetes 的包管理工具，可以方便地发现、共享和使用为Kubernetes构建的应用。学习 helm 主要是想通过 helm 来实现管理内部应用的管理与发布，在通过 Jenkins 来实现应用的 CI/CD 集成时，发现回滚是一个不可忽视的问题。在众多的实现方式中，发现helm实现的很完美，没有那么复杂也能实现满足当前的功能。  
-
 Helm 是由 客户端和服务端组成。运行在 Kubernetes 群集中，并承担管理 Kubernetes 应用程序的生命周期。它包含几个基本概念：  
-
-1. Chart：一个 Helm 包，其中包含了运行一个应用所需要的镜像、依赖和资源定义等，还可能包含 Kubernetes 集群中的服务定义
-2. Release: 在 Kubernetes 集群上运行的 Chart 的一个实例。在同一个集群上，一个 Chart
+  - Chart：一个 Helm 包，其中包含了运行一个应用所需要的镜像、依赖和资源定义等，还可能包含 Kubernetes 集群中的服务定义
+  - Release: 在 Kubernetes 集群上运行的 Chart 的一个实例。在同一个集群上，一个 Chart
    可以安装很多次。每次安装都会创建一个新的 release。例如一个 MySQL Chart，如果想在服务器上运行两个数据库，就可以把这个Chart 安装两次。每次安装都会生成自己的 Release，会有自己的 Release 名称。
-3. Repository：用于发布和存储 Chart 的仓库。
+  - Repository：用于发布和存储 Chart 的仓库。
 
-## 安全安装 HELM
+### 安全安装 HELM
 
 <h3>安装helm 客户端</h3>
 
