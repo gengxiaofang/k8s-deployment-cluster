@@ -1,14 +1,15 @@
 # 手动安装 kubernetes v1.13.0 高可用集群
 
-### 本文意图
+
    主要目的是方便学习 kubernetes 的朋友能够实现快速安装，不在因为从安装入门到放弃 kubernetes。本文的基于 Centos 7.4 作为基础系统环境，其他详细操作请参考其他文档。
 
-### 章节目录
+### 目录
 
 * [实验环境]()
   * [1.安装前准备](./01.基础环境准备.md)
   * [2.etcd集群准备](./02.创建etcd集群.md)
   * [3.通过keepalived+haproxy实现apiserver高可用](./03.keepalived+haproxy负载.md)
+  * [4.etcd备份](./ops/etcd/etcd_cluster_backup_recovery.md)
 * [master 节点部署]()
   * [1.二进制部署api-server组件](./04.kube-apiserver.md)
   * [2.二进制部署kube-controller-manager组件](./05.kube-controller-manager.md)
