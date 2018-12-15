@@ -6,7 +6,11 @@ etcd集群能够自动的从临时故障（例如，机器重新引导）中恢�
 ```
 $ mkdir /data/etcd_backup -p
 $ export ETCDCTL_API=3;
-$ etcdctl --cacert=/etc/kubernetes/ssl/ca.pem --cert=/etc/etcd/ssl/etcd.pem --key=/etc/etcd/ssl/etcd-key.pem --endpoints https://192.168.133.128:2379,https://192.168.133.129:2379,https://192.168.133.130:2379 snapshot save /data/etcd_backup/$(date +%Y%m%d_%H%M%S)_snapshot.db
+$ etcdctl --cacert=/etc/kubernetes/ssl/ca.pem \
+     --cert=/etc/etcd/ssl/etcd.pem \
+     --key=/etc/etcd/ssl/etcd-key.pem \
+     --endpoints https://192.168.133.128:2379,https://192.168.133.129:2379,https://192.168.133.130:2379 \
+     snapshot save /data/etcd_backup/$(date +%Y%m%d_%H%M%S)_snapshot.db
 Snapshot saved at /data/etcd_backup/20181215_145639_snapshot.db
 $ ls /data/etcd_backup/
 20181215_145639_snapshot.db
@@ -42,8 +46,8 @@ $ rm -rf /var/lib/etcd
 ```
 恢复etcd数据
 ```
-# 拷贝 k8s-m01 备份数据到其他2台主机
-$ scp /data/etcd_backup/20181215_145639_snapshot.db 192.168.133.129:/tmp/                                                                                                                                                    100% 5172KB  43.2MB/s   00:00    
+# 拷贝 k8s-m01 备份数据到其他2台etcd主机
+$ scp /data/etcd_backup/20181215_145639_snapshot.db 192.168.133.129:/tmp/                                                               
 $ scp /data/etcd_backup/20181215_145639_snapshot.db 192.168.133.130:/tmp/
 
 # 开始恢复
