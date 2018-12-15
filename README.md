@@ -6,5 +6,15 @@
 
 ![ssl-success](images/dashboard.png)
 
-* [1.基础环境准备](./01.基础环境准备.md)
-* [2.安装etcd集群](./02.创建etcd集群.md)
+* [环境说明]()
+  * [1.基础环境准备](./01.基础环境准备.md)
+* [etcd 部署]()
+  * [2.安装etcd集群](./02.创建etcd集群.md)
+* [master 节点部署]()
+  * [3.部署api-server高可用组件](./03.keepalived+haproxy负载.md)
+  * [4.二进制部署api-server组件](./04.kube-apiserver.md)
+  * [5.二进制部署kube-controller-manager组件](./05.kube-controller-manager.md)
+  * [6.二进制部署kube-scheduler组件](./06.kube-scheduler.md)
+
+* [node 节点部署]()
+  * [6.二进制部署kubelet件](./07.kubelet node 部署.md)
