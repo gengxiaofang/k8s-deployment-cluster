@@ -17,10 +17,10 @@
   * [4.二进制部署kube-scheduler组件](./06.kube-scheduler.md)
 
 * [node 节点部署]()
-  * [1.二进制部署kubelet组件件](./07.kubelet node 部署.md)
-  * [2.二进制部署kube-proxy组件](./08.kube-proxy 部署.md)
+  * [1.二进制部署kubelet组件](./07.kubelet node 部署.md)
+  * [2.二进制部署kube-proxy组件](08.kube-proxy 部署.md)
   
-* [附加组件部署]()
-  * [网络插件部署]()
+* [附加组件部署]( )
+  * [网络插件部署]( )
    * [1.calico](./09-1.calico 网络设置.md)
    * [2.flannel](./09-2.flannel 网络设置.md)
