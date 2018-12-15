@@ -1,7 +1,8 @@
-# 手动安装 kubernetes 1.13.0 高可用集群
+# 手动安装 kubernetes v1.13.0 高可用集群
 
 ### 本文意图
    主要目的是方便学习 kubernetes 的朋友能够实现快速安装，不在因为从安装入门到放弃 kubernetes。本文的基于 Centos 7.4 作为基础系统环境，其他详细操作请参考其他文档。
+![ssl-success](images/dashboard.png)
 
 ### 目录
 * [环境说明]()
@@ -34,9 +35,5 @@
 * [prometheus-operator]( )
   * [prometheus-operator部署](./16.通过helm部署prometheusoperator监控.md)
 
-### 效果展示
-![ssl-success](images/dashboard.png)
-
-### 参考项目
 **本文参考链接：**
 https://github.com/opsnull/follow-me-install-kubernetes-cluster 
