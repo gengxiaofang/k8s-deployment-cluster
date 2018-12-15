@@ -5,7 +5,7 @@
 
 ### 目录
 * [实验环境]()
-  *  
+  * 
     * [安装前准备](./01.基础环境准备.md)
     * [etcd集群准备](./02.创建etcd集群.md)
     * [安装keepalived以及haproxy](./03.keepalived+haproxy负载.md)
