@@ -24,3 +24,6 @@
   * [网络插件部署]( )
      * [1.calico](./09-1.calico网络设置.md)
      * [2.flannel](./09-2.flannel网络设置.md)
+  * [CoreDNS插件部署](./10. coredns.md)
+  * [Dashborad插件部署](./11. dashboard.md)
+  * [Heapster插件部署](./12. heapster.md)
