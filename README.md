@@ -4,10 +4,9 @@
    主要目的是方便学习 kubernetes 的朋友能够实现快速安装，不在因为从安装入门到放弃 kubernetes。本文的基于 Centos 7.4 作为基础系统环境，其他详细操作请参考其他文档。
 
 ### 章节目录
-* [环境说明]()
-* [1.基础环境准备](./01.基础环境准备.md)
-* [etcd 部署]()
-  * [1.安装etcd集群](./02.创建etcd集群.md)
+
+* [基础环境准备](./01.基础环境准备.md)
+* [1.安装etcd集群](./02.创建etcd集群.md)
 * [master 节点部署]()
   * [1.部署api-server高可用组件](./03.keepalived+haproxy负载.md)
   * [2.二进制部署api-server组件](./04.kube-apiserver.md)
