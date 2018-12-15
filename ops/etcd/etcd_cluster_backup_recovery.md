@@ -30,7 +30,7 @@ $ rm -rf /var/lib/etcd
 [root@k8s-m02 ~]# systemctl stop kube-apiserver
 [root@k8s-m02 ~]# systemctl status kube-apiserver
 ```
-**提示：** 停止 apiserver 对整个现有运行pod无任何影响;  
+**提示：** 停止 apiserver 对整个现有运行pod无任何影响。  
 停止etcd服务
 ```
 [root@k8s-m01 ~]# systemctl stop etcd
@@ -85,10 +85,10 @@ export ETCDCTL_API=3
 [root@k8s-m03 ~]# chown etcd:etcd -R /var/lib/etcd
 ```
 **提示：**
-  * `--initial-cluster-token`该值与 etcd.conf 文件中 `ETCD_INITIAL_CLUSTER_TOKEN` 字段值一致;
-  * `--data-dir` 该值与 etcd.conf 文件中 `ETCD_DATA_DIR` 字段值一致;
-  * `--name` 该值与 etcd.conf 文件中 `ETCD_NAME` 字段值一致;
-  * 其他IP地址部分的变动与本机IP和自己的配置有关，如你使用的主机名替换成你自己的主机名即可;
+  * `--initial-cluster-token`该值与 etcd.conf 文件中 `ETCD_INITIAL_CLUSTER_TOKEN` 字段值一致；
+  * `--data-dir` 该值与 etcd.conf 文件中 `ETCD_DATA_DIR` 字段值一致；
+  * `--name` 该值与 etcd.conf 文件中 `ETCD_NAME` 字段值一致；
+  * 其他IP地址部分的变动与本机IP和自己的配置有关，如你使用的主机名替换成你自己的主机名即可；
 
 启动etcd
 ```
