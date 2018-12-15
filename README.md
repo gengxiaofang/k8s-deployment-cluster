@@ -17,7 +17,7 @@
   * [1.二进制部署kubelet组件](./07.kubelet-node部署.md)
   * [2.二进制部署kube-proxy组件](./08.kube-proxy部署.md)
 * [附加组件部署]( )
-  * [网络插件部署]( )
+  * [网络插件部署](二选一)
      * [1.calico](./09-1.calico网络设置.md)
      * [2.flannel](./09-2.flannel网络设置.md)
   * [CoreDNS插件部署](./10.coredns.md)
