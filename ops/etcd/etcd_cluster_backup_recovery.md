@@ -27,8 +27,8 @@ $ rm -rf /var/lib/etcd
 [root@k8s-m02 ~]# systemctl stop kube-apiserver
 [root@k8s-m02 ~]# systemctl status kube-apiserver
 
-[root@k8s-m02 ~]# systemctl stop kube-apiserver
-[root@k8s-m02 ~]# systemctl status kube-apiserver
+[root@k8s-m03 ~]# systemctl stop kube-apiserver
+[root@k8s-m03 ~]# systemctl status kube-apiserver
 ```
 **提示：** 停止 apiserver 对整个现有运行pod无任何影响。  
 停止etcd服务
@@ -39,8 +39,8 @@ $ rm -rf /var/lib/etcd
 [root@k8s-m02 ~]# systemctl stop etcd
 [root@k8s-m02 ~]# systemctl status etcd
 
-[root@k8s-m02 ~]# systemctl stop etcd
-[root@k8s-m02 ~]# systemctl status etcd
+[root@k8s-m03 ~]# systemctl stop etcd
+[root@k8s-m03 ~]# systemctl status etcd
 
 ```
 恢复etcd数据
