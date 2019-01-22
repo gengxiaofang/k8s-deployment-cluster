@@ -5,7 +5,7 @@
 $ git clone https://github.com/XiaoMuYi/k8s-deployment-cluster.git
 $ yum -y install http://dist.yongche.com/centos/7/epel/x86_64/Packages/a/ansible-2.6.5-1.el7.noarch.rpm
 ```
-提示：到`https://github.com/ceph/ceph-ansible/releases`下载最新稳定版本，并且官方对ansible目前只支持2.4以及2.6版本。
+提示：https://github.com/ceph/ceph-ansible/releases 下载最新稳定版本，并且官方对ansible目前只支持2.4以及2.6版本。
 
 **执行安装**
 ```
@@ -54,7 +54,7 @@ $ kubectl -n $NAMESPACE apply -f ./rbac
 **创建动态PV/PVC**
 创建一个storageclass
 ```
-$ cd example
+$ cd ./k8s-deployment-cluster/ops/ceph/example/
 $ kubectl create -f local-class.yaml
 $ kubectl get storageclass
 NAME     PROVISIONER       AGE
@@ -72,4 +72,4 @@ claim-local   Bound    pvc-127dd47b-08ee-11e9-9e4f-faf206331800   1Gi        RWX
 $ kubectl create -f test-pod.yaml -n cephfs
 $ kubectl get pod cephfs-pv-pod1 -n cephfs
 ```
-提示：secret和provisioner不在同一个namespace中的话，获取secret权限不够。
+提示：`secret` 和 `provisioner` 不在同一个 `namespace` 中的话，获取 `secret` 权限不够。
