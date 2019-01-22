@@ -4,13 +4,14 @@
 ```
 $ git clone https://github.com/XiaoMuYi/k8s-deployment-cluster.git
 $ yum -y install http://dist.yongche.com/centos/7/epel/x86_64/Packages/a/ansible-2.6.5-1.el7.noarch.rpm
-```
-提示：https://github.com/ceph/ceph-ansible/releases 下载最新稳定版本，并且官方对ansible目前只支持2.4以及2.6版本。  
+```  
 **执行安装**
 ```
 $ cd k8s-deployment-cluster/ops/ceph/ceph-ansible-3.2.0
 $ ansible-playbook -i hosts site.yml
 ``` 
+提示：https://github.com/ceph/ceph-ansible/releases 下载最新稳定版本，并且官方对ansible目前只支持2.4以及2.6版本。关于ansible-playbook修改内容参考group_vars/{all.yml,mgrs.yml,osds.yml}以及hosts和site.yml文件。
+```
 **设置 cephfs_data pg_num 数**
 ```
 $ ceph osd pool set cephfs_data pg_num 128
