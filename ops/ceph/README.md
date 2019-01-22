@@ -169,12 +169,7 @@ $ ceph -s
     usage:   18 GiB used, 33 TiB / 33 TiB avail
     pgs:     16 active+clean
 ```
-从上面可以看到，提示说每个osd上的pg数量小于最小的数目30个。pgs为 16，因为是3副本的配置，所以当有18个osd的时候，每个osd上均分了16/18 * 3=2个pgs,也就是出现了如上的错误 小于最小配置30个。  
-
-集群这种如果进行数据的存储和操作，会引发集群卡死，无法响应io，同事会导致大面积的 osd down。  
-
-cephfs 需要用到两个pool ： fs_data 和fs_metadata。 在初次使用ceph 就能之前需要首先规划 集群一共承载多少存储业务，创建多少个 pool，最后得到每个存储应该分配多少个pg。  
-参考链接：http://docs.ceph.com/docs/mimic/rados/operations/placement-groups/  
+从上面可以看到，提示说每个osd上的pg数量小于最小的数目30个。pgs为 16，因为是3副本的配置，所以当有18个osd的时候，每个osd上均分了16/18 * 3=2个pgs,也就是出现了如上的错误 小于最小配置30个。集群这种如果进行数据的存储和操作，会引发集群卡死，无法响应io，同事会导致大面积的 osd down。cephfs 需要用到两个pool ： fs_data 和fs_metadata。 在初次使用ceph 就能之前需要首先规划 集群一共承载多少存储业务，创建多少个 pool，最后得到每个存储应该分配多少个pg。参考链接：http://docs.ceph.com/docs/mimic/rados/operations/placement-groups/  
 
 必须选择pg_num的值，因为它无法自动计算。以下是常用的一些值：
  * 少于 5 OSDs pg_num 设置为 128
@@ -184,7 +179,7 @@ cephfs 需要用到两个pool ： fs_data 和fs_metadata。 在初次使用ceph 
 如果您有超过50个OSD，则需要了解折衷以及如何自己计算pg_num值要自己计算pg_num值，请使用pgcalc工具。参考链接：http://docs.ceph.com/docs/mimic/rados/operations/placement-groups/
 
 关于cephfs_metadata pug_num正确配置参考：https://ceph.com/planet/cephfs-ideal-pg-ratio-between-metadata-and-data-pools/
-**问题2. 设置 pg_num 提示错误**
+**问题2. 设置pg_num提示错误**
 ```
 $ ceph osd pool set cephfs_data pg_num 1024
 Error E2BIG: specified pg_num 1024 is too large (creating 1016 new PGs on ~8 OSDs exceeds per-OSD max with mon_osd_max_split_count of 32)
@@ -197,7 +192,7 @@ $ ceph osd pool set cephfs_metadata pgp_num 32
 $ ceph osd pool set cephfs_metadata pg_num 64
 $ ceph osd pool set cephfs_metadata pgp_num 64
 ```
-**问题3. mgr 模块无法监听地址**
+**问题3. mgr模块无法监听地址**
 ```
 Jan 22 10:48:21 k8store01 ceph-mgr: ChannelFailures: error('No socket could be created',)
 Jan 22 10:48:21 k8store01 ceph-mgr: [22/Jan/2019:10:48:21] ENGINE Bus STOPPING
@@ -215,11 +210,9 @@ Jan 22 10:48:21 k8store01 ceph-mgr: File "/usr/lib/python2.7/site-packages/cherr
 Jan 22 10:48:21 k8store01 ceph-mgr: raise e_info
 Jan 22 10:48:21 k8store01 ceph-mgr: ChannelFailures: error('No socket could be created',)
 ```
-问题分析：
-因为我把centos7的ipv6关闭了所以报错了，mgr默认是同时开启ipv4和ipv6，解决方案是指定使用ipv4启动mgr。
-解决方案：
+主要是因为在centos7中将ipv6关闭了所以报错了，mgr默认是同时开启ipv4和ipv6，解决方案是指定使用ipv4启动mgr。解决方案：
 ```
-ceph config-key set mgr/dashboard/server_addr 0.0.0.0
-ceph mgr module disable dashboard
-ceph mgr module enable dashboard
+$ ceph config-key set mgr/dashboard/server_addr 0.0.0.0
+$ ceph mgr module disable dashboard
+$ ceph mgr module enable dashboard
 ```
