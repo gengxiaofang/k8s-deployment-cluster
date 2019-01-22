@@ -50,7 +50,7 @@ $ NAMESPACE=cephfs
 $ sed -r -i "s/namespace: [^ ]+/namespace: $NAMESPACE/g" ./rbac/*.yaml
 $ kubectl -n $NAMESPACE apply -f ./rbac
 ```
-参考链接：https://github.com/kubernetes-incubator/external-storage/tree/master/ceph/cephfs/deploy  
+
 **创建动态PV/PVC**
 创建一个storageclass
 ```
@@ -73,3 +73,6 @@ $ kubectl create -f test-pod.yaml -n cephfs
 $ kubectl get pod cephfs-pv-pod1 -n cephfs
 ```
 提示：`secret` 和 `provisioner` 不在同一个 `namespace` 中的话，获取 `secret` 权限不够。
+
+### 参考链接
+https://github.com/kubernetes-incubator/external-storage/tree/master/ceph/cephfs/deploy  
