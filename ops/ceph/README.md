@@ -11,9 +11,8 @@ $ yum -y install http://dist.yongche.com/centos/7/epel/x86_64/Packages/a/ansible
 ```
 $ cd k8s-deployment-cluster/ops/ceph/ceph-ansible-3.2.0
 $ ansible-playbook -i hosts site.yml
-```
-**设置`PG`数**  
-设置 cephfs_data pg_num 数
+``` 
+**设置 cephfs_data pg_num 数**
 ```
 $ ceph osd pool set cephfs_data pg_num 128
 $ ceph osd pool set cephfs_data pgp_num 128
@@ -21,7 +20,7 @@ $ ceph osd pool set cephfs_data pgp_num 128
 $ ceph osd pool set cephfs_data pg_num 1024
 $ ceph osd pool set cephfs_data pgp_num 1024
 ```
-设置 cephfs_metadata pg_num 数
+**设置 cephfs_metadata pg_num 数**
 ```
 $ ceph osd pool set cephfs_metadata pg_num 32
 $ ceph osd pool set cephfs_metadata pgp_num 32
@@ -31,7 +30,6 @@ $ ceph osd pool set cephfs_metadata pgp_num 128
 ```
 
 **创建ceph-secret这个k8s secret对象**  
-在ceph集群主机执行
 ```
 $ ceph auth get-key client.admin
 AQCCVSBcLK5nLhAAD3sehi8lweCwT+FJbvGSIA==
@@ -50,9 +48,7 @@ $ NAMESPACE=cephfs
 $ sed -r -i "s/namespace: [^ ]+/namespace: $NAMESPACE/g" ./rbac/*.yaml
 $ kubectl -n $NAMESPACE apply -f ./rbac
 ```
-
-**创建动态PV/PVC**
-创建一个storageclass
+**创建一个storageclass**
 ```
 $ cd ./k8s-deployment-cluster/ops/ceph/example/
 $ kubectl create -f local-class.yaml
@@ -60,7 +56,7 @@ $ kubectl get storageclass
 NAME     PROVISIONER       AGE
 cephfs   ceph.com/cephfs   10s
 ```
-创建PVC使用cephfs storageClass动态分配PV
+**创建PVC使用cephfs storageClass动态分配PV**
 ```
 $ kubectl create -f local-claim.yaml
 $ kubectl get pvc claim-local -n cephfs
