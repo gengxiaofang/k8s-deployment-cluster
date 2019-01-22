@@ -18,7 +18,7 @@ $ egrep -v "^#|^$" group_vars/mgrs.yml
 $ egrep -v "^#|^$" group_vars/osds.yml
 $ egrep -v "^#|^$" site.yml
 ```
-提示：这里只需要注释掉其他内容即可，我这里显示的是注释后的内容。
+提示：这里只需要注释掉其他内容即可，我这里显示的是注释后的内容。  
 **1.4 执行安装操作**
 ```
 $ ansible-playbook -i hosts site.yml
