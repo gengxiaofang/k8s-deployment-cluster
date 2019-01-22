@@ -57,7 +57,7 @@ $ kubectl get storageclass
 NAME     PROVISIONER       AGE
 cephfs   ceph.com/cephfs   10s
 ```
-**创建PVC使用cephfs storageClass动态分配PV**
+**使用storageClass动态分配PV**
 ```
 $ kubectl create -f local-claim.yaml
 $ kubectl get pvc claim-local -n cephfs
