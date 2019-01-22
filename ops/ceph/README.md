@@ -12,7 +12,7 @@ $ yum -y install http://dist.yongche.com/centos/7/epel/x86_64/Packages/a/ansible
 $ cd k8s-deployment-cluster/ops/ceph/ceph-ansible-3.2.0
 $ ansible-playbook -i hosts site.yml
 ```
-**设置pg数**  
+**设置`PG`数**  
 设置 cephfs_data pg_num 数
 ```
 $ ceph osd pool set cephfs_data pg_num 128
