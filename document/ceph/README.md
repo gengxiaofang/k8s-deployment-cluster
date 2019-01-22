@@ -11,7 +11,7 @@ $ cd k8s-deployment-cluster/ops/ceph/ceph-ansible-3.2.0
 $ ansible-playbook -i hosts site.yml
 ``` 
 提示：[最新稳定版本请点击](https://github.com/ceph/ceph-ansible/releases) 并且官方对 `ansible` 目前只支持 `2.4`以及`2.6` 版本。关于 `ansible-playbook` 修改内容参考 `group_vars/{all.yml,mgrs.yml,osds.yml}` 以及 `hosts`和`site.yml` 文件。
-```
+
 **设置 cephfs_data pg_num 数**
 ```
 $ ceph osd pool set cephfs_data pg_num 128
