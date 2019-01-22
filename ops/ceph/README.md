@@ -1,16 +1,16 @@
 ### 一、安装 ceph
-**1.1安装ansible**
+**1.1 安装ansible**
 ```
 yum -y install http://dist.yongche.com/centos/7/epel/x86_64/Packages/a/ansible-2.6.5-1.el7.noarch.rpm
 ```
 提示：官方对 ansible 版本有明确的要求，目前支持 2.4 以及 2.6 不能太高也不能太新。
 
-**1.2下载ceph-ansible**  
+**1.2 下载ceph-ansible**  
 到 https://github.com/ceph/ceph-ansible/releases 下载最新稳定版本，建议下载对应自己想安装的版本。如何知道自己下载的 ceph-ansible 支持自己想安装的 ceph 版本？只能查看与之对应的 Changelog。(当前下载 v3.2.0)
 ```
 git clone https://github.com/XiaoMuYi/k8s-deployment-cluster.git
 ```
-**1.3查看相关配置**
+**1.3 查看相关配置**
 ```
 $ cat hosts
 $ egrep -v "^#|^$" group_vars/all.yml
@@ -19,32 +19,30 @@ $ egrep -v "^#|^$" group_vars/osds.yml
 $ egrep -v "^#|^$" site.yml
 ```
 提示：这里只需要注释掉其他内容即可，我这里显示的是注释后的内容。
-**1.4执行安装操作**
+**1.4 执行安装操作**
 ```
 $ ansible-playbook -i hosts site.yml
-```
-重启服务：
-```
-systemctl restart ceph-mds.target
-systemctl restart ceph-mgr.target
-systemctl restart ceph-mon.target
-systemctl restart ceph-osd.target
+重启服务
+$ systemctl restart ceph-mds.target
+$ systemctl restart ceph-mgr.target
+$ systemctl restart ceph-mon.target
+$ systemctl restart ceph-osd.target
 ```
 ### 二、Ceph 文件系统
 ceph 文件系统，需要部署 mds（元数据服务器）。基本依赖解决之后，就可以为 cephfs 创建 pool，并且至少需要两个rados池，一个用于数据，一个用于元数据。我们这里是ansible部署，所以很多过程已经实现。手动操作如下：
-**2.1创建pool**
+**2.1 创建pool**
 ```
 $ ceph osd pool create cephfs_data 128
 pool 'cephfs_data' created
 $ ceph osd pool create cephfs_metadata 128
 pool 'cephfs_metadata' created
 ```
-**2.2创建文件系统**
+**2.2 创建文件系统**
 ```
 $ ceph fs new cephfs cephfs_metadata cephfs_data
 $ ceph fs ls
 ```
-**2.3启用dashboard**
+**2.3 启用dashboard**
 ```
 $ ceph mgr module enable dashboard	# 启用dashboard模块
 ```
@@ -67,7 +65,7 @@ $ ceph config-key set mgr/dashboard/server_addr 0.0.0.0
 $ ceph config-key set mgr/dashboard/server_port 9000
 $ systemctl restart ceph-mgr\@k8store01.service
 ```
-**2.4设置pg数**
+**2.4 设置pg数**
 查看当前pg数
 ```
 $ ceph osd pool get cephfs_data pg_num
@@ -124,7 +122,7 @@ $ sed -r -i "s/namespace: [^ ]+/namespace: $NAMESPACE/g" ./rbac/*.yaml
 $ kubectl -n $NAMESPACE apply -f ./rbac
 ```
 参考链接：https://github.com/kubernetes-incubator/external-storage/tree/master/ceph/cephfs/deploy
-**3.2创建动态PV/PVC**
+**3.2 创建动态PV/PVC**
 创建一个storageclass
 ```
 $ cd example
