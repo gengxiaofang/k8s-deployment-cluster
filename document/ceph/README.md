@@ -10,7 +10,7 @@ $ yum -y install http://dist.yongche.com/centos/7/epel/x86_64/Packages/a/ansible
 $ cd k8s-deployment-cluster/ops/ceph/ceph-ansible-3.2.0
 $ ansible-playbook -i hosts site.yml
 ``` 
-提示：https://github.com/ceph/ceph-ansible/releases 下载最新稳定版本，并且官方对ansible目前只支持2.4以及2.6版本。关于ansible-playbook修改内容参考group_vars/{all.yml,mgrs.yml,osds.yml}以及hosts和site.yml文件。
+提示：[下载最新稳定版本](https://github.com/ceph/ceph-ansible/releases) ，并且官方对 `ansible`v目前只支持 `2.4`以及`2.6` 版本。关于 `ansible-playbook` 修改内容参考 `group_vars/{all.yml,mgrs.yml,osds.yml}` 以及 `hosts`和`site.yml` 文件。
 ```
 **设置 cephfs_data pg_num 数**
 ```
