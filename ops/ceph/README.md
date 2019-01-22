@@ -30,7 +30,7 @@ $ ceph osd pool set cephfs_metadata pg_num 128
 $ ceph osd pool set cephfs_metadata pgp_num 128
 ```
 
-**创建ceph-secret这个k8s secret对象**
+**创建ceph-secret这个k8s secret对象**  
 在ceph集群主机执行
 ```
 $ ceph auth get-key client.admin
