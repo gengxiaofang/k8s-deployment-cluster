@@ -1,4 +1,4 @@
-### 一、安装 ceph
+#### 一、安装 ceph
 **1.1 安装ansible**
 ```
 yum -y install http://dist.yongche.com/centos/7/epel/x86_64/Packages/a/ansible-2.6.5-1.el7.noarch.rpm
@@ -28,7 +28,7 @@ $ systemctl restart ceph-mgr.target
 $ systemctl restart ceph-mon.target
 $ systemctl restart ceph-osd.target
 ```
-### 二、Ceph 文件系统
+#### 二、Ceph 文件系统
 ceph 文件系统，需要部署 mds（元数据服务器）。基本依赖解决之后，就可以为 cephfs 创建 pool，并且至少需要两个rados池，一个用于数据，一个用于元数据。我们这里是ansible部署，所以很多过程已经实现。手动操作如下：
 **2.1 创建pool**
 ```
@@ -100,7 +100,7 @@ $ ceph osd pool set cephfs_adata pgp_num 512
 $ ceph osd pool set cephfs_data pg_num 1024
 $ ceph osd pool set cephfs_data pgp_num 1024
 ```
-### 三、kubernetes 集成 cephfs 
+#### 三、kubernetes 集成 cephfs 
 **3.1 创建ceph-secret这个k8s secret对象**
 在ceph集群主机执行
 ```
@@ -145,7 +145,7 @@ $ kubectl get pod cephfs-pv-pod1 -n cephfs
 ```
 提示：secret和provisioner不在同一个namespace中的话，获取secret权限不够。
 
-### 问题总结
+#### 问题总结
 **问题1. 每个 OSD 上的PG数量小于最小数目30个**
 ```
 $ ceph health
