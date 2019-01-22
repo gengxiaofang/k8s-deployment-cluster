@@ -1,6 +1,5 @@
 # cephfs与kubernetes集成
 ---
-### 安装 cephfs 集群
 **ansible安装**
 ```
 $ git clone https://github.com/XiaoMuYi/k8s-deployment-cluster.git
@@ -13,7 +12,7 @@ $ yum -y install http://dist.yongche.com/centos/7/epel/x86_64/Packages/a/ansible
 $ cd k8s-deployment-cluster/ops/ceph/ceph-ansible-3.2.0
 $ ansible-playbook -i hosts site.yml
 ```
-**设置pg数**
+**设置pg数**  
 设置 cephfs_data pg_num 数
 ```
 $ ceph osd pool set cephfs_data pg_num 128
@@ -30,7 +29,7 @@ $ ceph osd pool set cephfs_metadata pgp_num 32
 $ ceph osd pool set cephfs_metadata pg_num 128
 $ ceph osd pool set cephfs_metadata pgp_num 128
 ```
-### kubernetes 集成 cephfs
+
 **创建ceph-secret这个k8s secret对象**
 在ceph集群主机执行
 ```
