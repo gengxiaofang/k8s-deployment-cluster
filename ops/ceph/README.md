@@ -161,50 +161,15 @@ $ egrep -v "^#|^$" site.yml
 ```
 $ ansible-playbook -i hosts site.yml
 ```
-
 重启服务：
+```
 systemctl restart ceph-mds.target
 systemctl restart ceph-mgr.target
 systemctl restart ceph-mon.target
 systemctl restart ceph-osd.target
-
-### 三、集群基础操作
-**集群状态**
 ```
-$ ceph -s        # 查看集群状态
-$ ceph health    # 查看集群监控状态
-```
-**查看 ceph 存储空间**
-```
-$ ceph df        # 查看集群存储空间
-$ ceph mds stat  # 查看 mds 状态
-```
-**查看 mon 相关信息**
-```
-$ ceph mon stat         # 查看 mon 状态信息
-$ ceph quorum_status 	# 查看 mon 选举状态
-$ ceph mon dump         # 查看 mon 映射信息
-$ ceph daemon k8store01  mon_status        # 查看 mon 详细状态
-```
-**查看 osd 相关信息**
-```
-$ ceph osd stat         # 查看 osd 运行状态
-$ ceph osd dump         # 查看 osd 映射信息
-$ ceph osd perf         # 查看数据延迟
-$ ceph osd df           # 详细列出集群每块磁盘的使用情况  
-$ ceph osd tree         # 查看 osd 目录树
-$ ceph osd getmaxosd    # 查看最大 osd 的个数
-```
-**查看 PG 信息**
-```
-$ ceph pg dump       	# 查看 PG 组的映射信息
-$ ceph pg stat       	# 查看 PG 状态
-$ ceph pg dump --format plain        		# 显示集群中的所有的 PG 统计,可用格式有纯文本plain(默认)和json
-```
-
-### 四、Ceph 文件系统
+### 三、Ceph 文件系统
 ceph 文件系统，需要部署 mds（元数据服务器）。基本依赖解决之后，就可以为 cephfs 创建 pool，并且至少需要两个rados池，一个用于数据，一个用于元数据。我们这里是ansible部署，所以很多过程已经实现。手动操作如下：
-
 **创建pool**
 ```
 $ ceph osd pool create cephfs_data 128
@@ -220,7 +185,6 @@ $ ceph fs new cephfs cephfs_metadata cephfs_data
 ```
 $ ceph fs ls
 ```
-
 #### 1. 启用 dashboard
 ```
 $ ceph mgr module enable dashboard	# 启用dashboard模块
@@ -240,7 +204,6 @@ $ ceph mgr services
 {
     "dashboard": "https://k8store01.ops.bj2.yongche.com:8443/"
 }
-
 
 $ ceph config-key set mgr/dashboard/server_addr 0.0.0.0
 $ ceph config-key set mgr/dashboard/server_port 9000
@@ -281,9 +244,9 @@ $ ceph osd pool set cephfs_data pg_num 1024
 $ ceph osd pool set cephfs_data pgp_num 1024
 ```
 
-### 五、kubernetes 集成 cephfs 
+### 四、kubernetes 集成 cephfs 
 
-#### 5.1 创建ceph-secret这个k8s secret对象
+#### 4.1 创建ceph-secret这个k8s secret对象
 在ceph集群主机执行
 ```
 $ ceph auth get-key client.admin
