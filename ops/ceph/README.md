@@ -50,7 +50,7 @@ $ NAMESPACE=cephfs
 $ sed -r -i "s/namespace: [^ ]+/namespace: $NAMESPACE/g" ./rbac/*.yaml
 $ kubectl -n $NAMESPACE apply -f ./rbac
 ```
-参考链接：https://github.com/kubernetes-incubator/external-storage/tree/master/ceph/cephfs/deploy
+参考链接：https://github.com/kubernetes-incubator/external-storage/tree/master/ceph/cephfs/deploy  
 **创建动态PV/PVC**
 创建一个storageclass
 ```
