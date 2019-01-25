@@ -2,8 +2,8 @@
 主要目的是给初学提供一份手动部署 kubernetes 集群的文档，虽然目前市面上这样的文档已经很多，但是他们主要以 kubeadm 以及 ansible-playbook 快速部署。我希望初学者通过二进制进行手动部署，这样可以熟悉 kubernetes 集群之间各组件的关系以及依赖。
 
 + 目录
-  * [实验环境]()
-    * [安装前准备](./01.基础环境准备.md)
+* [实验环境]()
+  * [安装前准备](./01.基础环境准备.md)
     * [etcd集群准备](./02.创建etcd集群.md)
     * [安装keepalived以及haproxy](./03.keepalived+haproxy负载.md)
     * [etcd备份](./ops/etcd/etcd_cluster_backup_recovery.md)
