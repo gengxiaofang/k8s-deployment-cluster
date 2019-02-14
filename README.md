@@ -24,6 +24,6 @@
     * [metrics-server插件部署](./13.metrics-server.md)
   * [其他组件部署]( )
     * [helm](./15.helm安装部署.md)
-    * [HPA自动伸缩](./14.hpa.md)
+    * [HPA自动伸缩](./14.HorizontalPodAutoscaling.md)
   * [prometheus-operator]( )
-    * [prometheus-operator部署](./16.通过helm部署prometheusoperator监控.md)
+    * [prometheus-operator部署](./16.通过helm部署prometheus-operator监控.md)
